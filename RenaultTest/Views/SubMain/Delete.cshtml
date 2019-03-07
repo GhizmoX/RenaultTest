@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "¿Borrar asignatura?";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewBag.Title</h1>
+<form id="formAction" action="@Url.Action("Index", "SubMain")">
+    <ul class="list-group">
+        <li class="list-group-item disabled" id="id"></li>
+        <li class="list-group-item disabled" id="name"></li>
+    </ul>
+    <input class="btn btn-primary" id="submitButton" type="submit" value="Borrar" />
+    <a class="btn btn-info" href="Index">Cancelar</a>
+</form>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            return results[1] || 0;
+        };
+        var value = $.urlParam('id');
+        $(function () {
+            $.getJSON(`/api/subject/id=${value}`, function (subjectsJsonPayload) {
+                $(subjectsJsonPayload).each(function (index, item) {
+                    $('#id').text(`${item.ID}`);
+                    $('#name').text(`${item.Name}`);
+                    $('#submitButton').bind("click", GeneralDelete);
+                });
+            });
+        });
+        function GeneralDelete() {
+            var dataJSON = { id: $('#id').text(), name: $('#name').text() };
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/subject',
+                data: JSON.stringify(dataJSON),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
+            });
+        }
+    </script>
+}

@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Estudiantes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>@ViewBag.Title</h1>
+
+<table id="grades" class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre completo</th>
+            <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="students"></tbody>
+</table>
+
+<a href="/Main/Edit?id=0">Nuevo [+]</a>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $.getJSON('/api/student', function (studentsJsonPayload) {
+                $(studentsJsonPayload).each(function (i, item) {
+                    $('#students').append(`
+                        <tr>
+                            <td><input id="identifier" type="hidden" value="${item.ID}" /></td>
+                            <td>${item.Name} ${item.LastName}</td>
+                            <td>
+                                <span style="padding: 5px;"><a href="/Main/Score?id=${item.ID}">Calificaciones</a></span>
+                                <span style="padding: 5px;"><a href="/Main/Edit?id=${item.ID}">Editar</a></span>
+                                <span style="padding: 5px;"><a href="/Main/Delete?id=${item.ID}">Borrar</a></span>
+                            </td>
+                        </tr>
+                    `);
+                });
+            });
+        });
+    </script>
+}

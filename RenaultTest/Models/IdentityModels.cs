@@ -1,8 +1,9 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
+using Models;
+using System.Data.Entity;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace RenaultTest.Models
 {
@@ -24,10 +25,19 @@ namespace RenaultTest.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-        
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
+
+        public DbSet<Student> Student { get; set; }
+        public DbSet<Subject> Subject { get; set; }
+        public DbSet<Grade> Grade { get; set; }
     }
 }

@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Control de alumno";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<form id="formAction" action="@Url.Action("Index", "Main")">
+    <input id="id" type="text" disabled />
+    <input id="name" type="text" />
+    <input id="lastname" type="text" />
+    <input id="term" type="text" />
+    <input class="btn btn-primary" id="submitButton" type="submit" value="Guardar" />
+    <a class="btn btn-info" href="Index">Cancelar</a>
+</form>
+
+@section scripts{
+    <script type="text/javascript">
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            return results[1] || 0;
+        };
+        var value = $.urlParam('id');
+        $(function () {
+            if (value != 0) {
+                $.getJSON(`/api/student/id=${value}`, function (studentsJsonPayload) {
+                    $(studentsJsonPayload).each(function (index, item) {
+                        $('#id').val(`${item.ID}`);
+                        $('#name').val(`${item.Name}`);
+                        $('#lastname').val(`${item.LastName}`);
+                        $('#term').val(`${item.Term}`);
+                        $('#submitButton').bind("click", GeneralPut);
+                    });
+                });
+            } else {
+                $('#submitButton').bind("click", GeneralPost);
+            }
+        });
+        function GeneralPut() {
+            var dataJSON = { id: $('#id').val(), name: $('#name').val(), lastname: $('#lastname').val(), term: $('#term').val() };
+            $.ajax({
+                type: 'PUT',
+                url: '/api/student',
+                data: JSON.stringify(dataJSON),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
+            });
+        }
+        function GeneralPost() {
+            var dataJSON = { id: $('#id').val(), name: $('#name').val(), lastname: $('#lastname').val(), term: $('#term').val() };
+            $.ajax({
+                type: 'POST',
+                url: '/api/student',
+                data: JSON.stringify(dataJSON),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
+            });
+        }
+    </script>
+}

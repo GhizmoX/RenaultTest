@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "¿Borrar estudiante?";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewBag.Title</h1>
+<form id="formAction" action="@Url.Action("Index", "Main")">
+    <ul class="list-group">
+        <li class="list-group-item disabled" id="id"></li>
+        <li class="list-group-item disabled" id="name"></li>
+        <li class="list-group-item disabled" id="lastname"></li>
+        <li class="list-group-item disabled" id="term"></li>
+    </ul>
+    <input class="btn btn-primary" id="submitButton" type="submit" value="Borrar" />
+    <a class="btn btn-info" href="Index">Cancelar</a>
+</form>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            return results[1] || 0;
+        };
+        var value = $.urlParam('id');
+        $(function () {
+            $.getJSON(`/api/student/id=${value}`, function (studentsJsonPayload) {
+                $(studentsJsonPayload).each(function (index, item) {
+                    $('#id').text(`${item.ID}`);
+                    $('#name').text(`${item.Name}`);
+                    $('#lastname').text(`${item.LastName}`);
+                    $('#term').text(`${item.Term}`);
+                    $('#submitButton').bind("click", GeneralDelete);
+                });
+            });
+        });
+        function GeneralDelete() {
+            var dataJSON = { id: $('#id').text(), name: $('#name').text(), lastname: $('#lastname').text(), term: $('#term').text() };
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/student',
+                data: JSON.stringify(dataJSON),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
+            });
+        }
+    </script>
+}

@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Calificaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<h2 id="studentName"></h2>
+<table id="grades" class="table">
+    <thead>
+        <tr>
+            <th scope="col">Materia</th>
+            <th scope="col">Parcial 1</th>
+            <th scope="col">Parcial 2</th>
+            <th scope="col">Parcial 3</th>
+            <th scope="col">Promedio</th>
+        </tr>
+    </thead>
+    <tbody id="students"></tbody>
+</table>
+<a class="btn btn-info" href="Index">Volver</a>
+@section scripts{
+    <script type="text/javascript">
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            return results[1] || 0;
+        };
+        var value = $.urlParam('id');
+        $(function () {
+            $.getJSON(`/api/student/id=${value}`, function (studentsJsonPayload) {
+                $(studentsJsonPayload).each(function (index, item) {
+                    $('#studentName').text(`${item.Name} ${item.LastName}`);
+                    $(item.Scores).each(function (subindex, subitem) {
+                        $('#students').append(`
+                        <tr>
+                            <td>${subitem.Subject}</td>
+                            <td>${subitem.PartialOne}</td>
+                            <td>${subitem.PartialTwo}</td>
+                            <td>${subitem.PartialThree}</td>
+                            <td>${subitem.TotalScore}</td>
+                            <td></td>
+                        </tr>
+                    `);
+                    });
+                });
+            });
+        });
+    </script>
+}
