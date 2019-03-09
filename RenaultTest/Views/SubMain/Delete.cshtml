@@ -11,7 +11,7 @@
         <li class="list-group-item disabled" id="name"></li>
     </ul>
     <input class="btn btn-primary" id="submitButton" type="submit" value="Borrar" />
-    <a class="btn btn-info" href="Index">Cancelar</a>
+    <a class="btn btn-danger" href="Index">Cancelar</a>
 </form>
 
 
@@ -22,24 +22,21 @@
             return results[1] || 0;
         };
         var value = $.urlParam('id');
+        var url = '/api/subject';
         $(function () {
             $.getJSON(`/api/subject/id=${value}`, function (subjectsJsonPayload) {
                 $(subjectsJsonPayload).each(function (index, item) {
                     $('#id').text(`${item.ID}`);
                     $('#name').text(`${item.Name}`);
-                    $('#submitButton').bind("click", GeneralDelete);
+                    $('#submitButton').bind("click", ExecuteDelete);
                 });
             });
         });
-        function GeneralDelete() {
-            var dataJSON = { id: $('#id').text(), name: $('#name').text() };
-            $.ajax({
-                type: 'DELETE',
-                url: '/api/subject',
-                data: JSON.stringify(dataJSON),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json'
-            });
+        function GetData() {
+            return { id: $('#id').text(), name: $('#name').text() };
+        }
+        function ExecuteDelete() {
+            GeneralRequest(GetData(), 'DELETE', url);
         }
     </script>
 }

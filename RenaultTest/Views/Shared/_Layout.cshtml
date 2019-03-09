@@ -4,11 +4,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -27,6 +27,12 @@
                     <li>@Html.ActionLink("Estudiantes", "Index", "Main", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("Materias", "Index", "SubMain", new { area = "" }, null)</li>
                 </ul>
+                @*<div class="nav navbar-right">
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Login", "Login", "User", new { area = "" }, null)</li>
+                            <li>@Html.ActionLink("Registrarse", "Register", "User", new { area = "" }, null)</li>
+                        </ul>
+                    </div>*@
             </div>
         </div>
     </div>
@@ -39,6 +45,7 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/api")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

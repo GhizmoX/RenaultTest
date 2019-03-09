@@ -7,10 +7,16 @@
 <h1>@ViewBag.Title</h1>
 
 <form id="formAction" action="@Url.Action("Index", "SubMain")">
-    <input id="id" type="text" disabled />
-    <input id="name" type="text" />
+    <div class="form-group">
+        <label for="id">Identificador</label>
+        <input class="form-control" id="id" type="text" placeholder="Id" disabled />
+    </div>
+    <div class="form-group">
+        <label for="name">Nombre</label>
+        <input class="form-control" id="name" type="text" placeholder="Nombre" />
+    </div>
     <input class="btn btn-primary" id="submitButton" type="submit" value="Guardar" />
-    <a class="btn btn-info" href="Index">Cancelar</a>
+    <a class="btn btn-danger" href="Index">Cancelar</a>
 </form>
 
 @section scripts{
@@ -20,38 +26,30 @@
             return results[1] || 0;
         };
         var value = $.urlParam('id');
+        var url = '/api/subject';
         $(function () {
             if (value != 0) {
                 $.getJSON(`/api/subject/id=${value}`, function (subjectsJsonPayload) {
                     $(subjectsJsonPayload).each(function (index, item) {
                         $('#id').val(`${item.ID}`);
                         $('#name').val(`${item.Name}`);
-                        $('#submitButton').bind("click", GeneralPut);
+                        $('#submitButton').bind("click", ExecutePut);
                     });
                 });
             } else {
-                $('#submitButton').bind("click", GeneralPost);
+                $('#submitButton').bind("click", ExecutePost);
             }
         });
-        function GeneralPut() {
-            var dataJSON = { id: $('#id').val(), name: $('#name').val() };
-            $.ajax({
-                type: 'PUT',
-                url: '/api/subject',
-                data: JSON.stringify(dataJSON),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json'
-            });
+        function GetData() {
+            return { id: $('#id').val(), name: $('#name').val() };
         }
-        function GeneralPost() {
-            var dataJSON = { id: $('#id').val(), name: $('#name').val() };
-            $.ajax({
-                type: 'POST',
-                url: '/api/subject',
-                data: JSON.stringify(dataJSON),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json'
-            });
+        function ExecutePut() {
+            var data = GetData();
+            GeneralRequest(data, 'PUT', url);
+        }
+        function ExecutePost() {
+            var data = GetData();
+            GeneralRequest(data, 'POST', url);
         }
     </script>
 }

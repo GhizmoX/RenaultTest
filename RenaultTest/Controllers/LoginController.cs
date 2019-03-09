@@ -26,7 +26,7 @@ namespace RenaultTest.Controllers
 
         [HttpPost]
         [Route("authenticate")]
-        public IHttpActionResult Authenticate(LoginRequest login)
+        public IHttpActionResult Authenticate([FromBody]LoginRequest login)
         {
             if (login == null)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -34,7 +34,7 @@ namespace RenaultTest.Controllers
             bool isCredentialValid = (login.Password == "123456");
             if (isCredentialValid)
             {
-                var token = TokenGenerator.GenerateTokenJwt(login.Username);
+                string token = TokenGenerator.GenerateTokenJwt(login.Username);
                 return Ok(token);
             }
             else

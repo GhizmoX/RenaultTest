@@ -7,12 +7,28 @@
 <h1>@ViewBag.Title</h1>
 
 <form id="formAction" action="@Url.Action("Index", "Main")">
-    <input id="id" type="text" disabled />
-    <input id="name" type="text" />
-    <input id="lastname" type="text" />
-    <input id="term" type="text" />
+    <div class="form-group">
+        <label for="id">Identificador</label>
+        <input class="form-control" id="id" type="text" placeholder="Id" disabled/>
+    </div>
+
+    <div class="form-group">
+        <label for="name">Nombre</label>
+        <input class="form-control" id="name" type="text" placeholder="Nombre" />
+    </div>
+
+    <div class="form-group">
+        <label for="lastname">Apellidos</label>
+        <input class="form-control" id="lastname" type="text" placeholder="Apellidos" />
+    </div>
+
+    <div class="form-group">
+        <label for="term">Periodo</label>
+        <input class="form-control" id="term" type="text" placeholder="Periodo" />
+    </div>
+
     <input class="btn btn-primary" id="submitButton" type="submit" value="Guardar" />
-    <a class="btn btn-info" href="Index">Cancelar</a>
+    <a class="btn btn-danger" href="Index">Cancelar</a>
 </form>
 
 @section scripts{
@@ -22,6 +38,7 @@
             return results[1] || 0;
         };
         var value = $.urlParam('id');
+        var url = '/api/student';
         $(function () {
             if (value != 0) {
                 $.getJSON(`/api/student/id=${value}`, function (studentsJsonPayload) {
@@ -30,32 +47,23 @@
                         $('#name').val(`${item.Name}`);
                         $('#lastname').val(`${item.LastName}`);
                         $('#term').val(`${item.Term}`);
-                        $('#submitButton').bind("click", GeneralPut);
+                        $('#submitButton').bind("click", ExecutePut);
                     });
                 });
             } else {
-                $('#submitButton').bind("click", GeneralPost);
+                $('#submitButton').bind("click", ExecutePost);
             }
         });
-        function GeneralPut() {
-            var dataJSON = { id: $('#id').val(), name: $('#name').val(), lastname: $('#lastname').val(), term: $('#term').val() };
-            $.ajax({
-                type: 'PUT',
-                url: '/api/student',
-                data: JSON.stringify(dataJSON),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json'
-            });
+        function GetData() {
+            return { id: $('#id').val(), name: $('#name').val(), lastname: $('#lastname').val(), term: $('#term').val() };
         }
-        function GeneralPost() {
-            var dataJSON = { id: $('#id').val(), name: $('#name').val(), lastname: $('#lastname').val(), term: $('#term').val() };
-            $.ajax({
-                type: 'POST',
-                url: '/api/student',
-                data: JSON.stringify(dataJSON),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json'
-            });
+        function ExecutePut() {
+            var data = GetData();
+            GeneralRequest(data, 'PUT', url);
+        }
+        function ExecutePost() {
+            var data = GetData();
+            GeneralRequest(data, 'POST', url);
         }
     </script>
 }

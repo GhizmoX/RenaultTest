@@ -28,8 +28,7 @@ namespace RenaultTest.Controllers
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             HttpStatusCode statusCode;
-
-            // determine whether a jwt exists or not
+            
             if (!TryRetrieveToken(request, out string token))
             {
                 statusCode = HttpStatusCode.Unauthorized;

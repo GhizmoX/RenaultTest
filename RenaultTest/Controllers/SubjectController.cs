@@ -4,6 +4,7 @@ using System.Web.Http;
 
 namespace RenaultTest.Controllers
 {
+    //[Authorize]
     [AllowAnonymous]
     [RoutePrefix("api/subject")]
     public class SubjectController : ApiController

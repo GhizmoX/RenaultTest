@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Registrarse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewBag.Title</h1>
+<form id="formAction" action="@Url.Action("Index", "Home")">
+    <div class="form-group">
+        <label for="username">Nombre</label>
+        <input class="form-control" id="username" type="text" placeholder="Nombre de usuario" />
+    </div>
+    <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input class="form-control" id="password" type="text" placeholder="Contraseña" />
+    </div>
+    <div class="form-group">
+        <label for="confirmPassword">Confirme su contraseña</label>
+        <input class="form-control" id="confirmPassword" type="text" placeholder="Confirme su contraseña" />
+    </div>
+    <input class="btn btn-primary" id="submitButton" type="submit" value="Login" />
+    <a class="btn btn-danger" href="@Url.Action("Index", "Home")">Cancelar</a>
+</form>
